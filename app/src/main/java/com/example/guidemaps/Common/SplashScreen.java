@@ -38,15 +38,12 @@ public class SplashScreen extends AppCompatActivity {
         backgroundImage.setAnimation(sideAnim);
         poweredByLine.setAnimation(bottomAnim);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed(() -> {
 
-                Intent intent = new Intent(getApplicationContext(), UserDashboard.class);
+                Intent intent = new Intent(getApplicationContext(), OnBoarding.class);
                 startActivity(intent);
                 finish();
 
-            }
         },SPLASH_TIMER);
     }
 }

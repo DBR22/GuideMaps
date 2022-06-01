@@ -3,4 +3,23 @@
     <string name="logo_name">Get A Way</string>
     <string name="slogan_name">We will help you to find your way!</string>
     <string name="powered_by">Desarrollado por David Blanes</string>
+
+    <!-- On Boarding Screen -->
+
+    <!-- Títulos -->
+    <string name="first_slide_title">Busca tu Localización</string>
+    <string name="second_slide_title">Haz una Llamada</string>
+    <string name="third_slide_title">Añade el Lugar que Falta</string>
+    <string name="fourth_slide_title">Siéntate y Disfruta</string>
+
+    <!-- Descripciones -->
+    <string name="first_slide_desc">Puede buscar cualquier lugar cercano o dentro de la ciudad especificada. Le mostraremos las tiendas específicas o todas las relacionadas con su búsqueda. </string>
+    <string name="second_slide_desc">Proporcionamos casi todos los números de todos los departamentos y tiendas registradas con nosotros. También puede realizar reservas.</string>
+    <string name="third_slide_desc">Si tienes una tienda o algo y quieres formar parte de nuestro creciente sector, añade tu lugar siguiendo unos sencillos pasos.</string>
+    <string name="fourth_slide_desc">Nosotros nos encargaremos de todo por ti. Como tienes la aplicación en tu bolsillo, no tienes que preocuparte de nada.  </string>
+
+    <!-- Botones -->
+    <string name="skip_btn">Saltar</string>
+    <string name="next_btn">Siguiente</string>
+    <string name="let_get_started">Empecemos</string>
 </resources>
