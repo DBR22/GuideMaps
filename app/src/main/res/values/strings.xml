@@ -22,4 +22,23 @@
     <string name="skip_btn">Saltar</string>
     <string name="next_btn">Siguiente</string>
     <string name="let_get_started">Empecemos</string>
+
+
+    <!-- Dashboard -->
+
+    <!-- Categorías -->
+    <string name="hotels">Hoteles</string>
+    <string name="restaurants">Restaurantes</string>
+    <string name="shops">Tiendas</string>
+    <string name="banks">Bancos</string>
+    <string name="airports">Aeropuertos</string>
+    <string name="education">Educación</string>
+
+    <!-- Títulos y Descripciones -->
+    <string name="featured_locations">Todos los lugares destacados</string>
+    <string name="featured_locations_description">¡Todos los lugares que aparecen y tienen la mayor demanda en la ciudad!</string>
+    <string name="most_viewed_locations">Lo más visto</string>
+    <string name="categories">Categorías</string>
+    <string name="view_all">Ver todo</string>
+    <string name="search_text">Buscar...</string>
 </resources>
