@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Guide Maps</string>
-    <string name="logo_name">Get A Way</string>
-    <string name="slogan_name">We will help you to find your way!</string>
+    <string name="logo_name">Encuentra tu Camino</string>
+    <string name="slogan_name">¡Todo lo que tiene tu ciudad está aquí!</string>
     <string name="powered_by">Desarrollado por David Blanes</string>
 
     <!-- On Boarding Screen -->
@@ -41,4 +41,23 @@
     <string name="categories">Categorías</string>
     <string name="view_all">Ver todo</string>
     <string name="search_text">Buscar...</string>
+
+
+    <!-- Navigation Drawer -->
+
+    <!-- Menu -->
+    <string name="home">Inicio</string>
+    <string name="search">Buscar</string>
+    <string name="all_categories">Categorías</string>
+    <string name="add_missing_place">Añadir Lugar</string>
+    
+    <!-- Profile -->
+    <string name="login">Iniciar Sesión</string>
+    <string name="profile">Perfil</string>
+    <string name="logout">Cerrar Sesión</string>
+
+    <!-- Share -->
+    <string name="share">Compartir</string>
+    <string name="rate_us">Califícanos</string>
+
 </resources>

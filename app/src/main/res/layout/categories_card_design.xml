@@ -8,12 +8,14 @@
     android:layout_margin="12sp">
 
     <RelativeLayout
+        android:id="@+id/background_gradient"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="15dp"
         android:background="@drawable/card_2">
 
         <TextView
+            android:id="@+id/categories_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Restaurante"
@@ -21,6 +23,7 @@
             android:fontFamily="@font/baloo"/>
         
         <ImageView
+            android:id="@+id/categories_image"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:src="@drawable/restaurant_image"
