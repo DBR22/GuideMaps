@@ -66,4 +66,14 @@
     <string name="expand_all">Ampliar</string>
     <string name="hospitals">Hospitales</string>
 
+
+    <!-- Retailer Panel -->
+    <string name="sign_up">Registrarse</string>
+    <string name="retailer_heading">Haz crecer tu negocio</string>
+    <string name="retailer_tag_line">¡Le ayudaremos a hacer crecer su negocio mediante servicios en línea!</string>
+    <string name="create_account">Crear Cuenta</string>
+    <string name="how_we_work">¿Cómo trabajamos?</string>
+    <string name="remember_me">Recuérdame</string>
+    <string name="forget_password">Olvidar Contraseña</string>
+
 </resources>

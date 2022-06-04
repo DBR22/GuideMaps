@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.guidemaps.Common.Login.RetailerStartUpScreen;
 import com.example.guidemaps.HelperClasses.HomeAdapter.CategoriesAdapter;
 import com.example.guidemaps.HelperClasses.HomeAdapter.CategoriesHelperClass;
 import com.example.guidemaps.HelperClasses.HomeAdapter.FeaturedAdapter;
@@ -106,13 +107,6 @@ public class UserDashboard extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
-    public void onBackPressed() {
-
-        if(drawerLayout.isDrawerVisible(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
-        else super.onBackPressed();
-
-    }
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
@@ -148,6 +142,7 @@ public class UserDashboard extends AppCompatActivity implements NavigationView.O
         categoriesRecycler.setAdapter(adapter);
 
     }
+
     private void mostViewedRecycler() {
 
         mostViewedRecycler.setHasFixedSize(true);
@@ -163,6 +158,7 @@ public class UserDashboard extends AppCompatActivity implements NavigationView.O
         mostViewedRecycler.setAdapter(adapter);
 
     }
+
     private void featuredRecycler() {
 
         featuredRecycler.setHasFixedSize(true);
@@ -178,6 +174,20 @@ public class UserDashboard extends AppCompatActivity implements NavigationView.O
         featuredRecycler.setAdapter(adapter);
 
         GradientDrawable gradient1 = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0xffeff400, 0xffaff600});
+
+    }
+
+    //Normal Functions
+
+    public void callRetailerScreen(View view) {
+        startActivity(new Intent(getApplicationContext(), RetailerStartUpScreen.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(drawerLayout.isDrawerVisible(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
+        else super.onBackPressed();
 
     }
 

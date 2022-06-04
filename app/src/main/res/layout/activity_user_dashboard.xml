@@ -27,13 +27,17 @@
                 android:src="@drawable/menu_icon" />
 
             <ImageView
+                android:id="@+id/login_signup"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/add_missing_place_icon"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:background="@color/banner_background"
+                android:onClick="callRetailerScreen"
                 android:padding="5dp"
-                android:background="@color/banner_background"/>
+                android:layout_margin="8dp"
+                android:elevation="6dp"
+                android:src="@drawable/add_missing_place_icon" />
 
         </RelativeLayout>
 
