@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".User.UserDashboard"
-    tools:openDrawer="start"
     android:id="@+id/drawer_layout">
     
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/home_background"
@@ -20,10 +20,11 @@
             android:padding="20dp">
 
             <ImageView
+                android:id="@+id/menu_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/menu_icon"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:src="@drawable/menu_icon" />
 
             <ImageView
                 android:layout_width="40dp"
@@ -337,6 +338,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/lightWhite"
+        android:theme="@style/navigationTheme"
         android:layout_gravity="start"
         app:headerLayout="@layout/menu_header"
         app:menu="@menu/main_menu"/>

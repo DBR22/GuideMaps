@@ -1,13 +1,19 @@
 package com.example.guidemaps.User;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.guidemaps.HelperClasses.HomeAdapter.CategoriesAdapter;
 import com.example.guidemaps.HelperClasses.HomeAdapter.CategoriesHelperClass;
@@ -20,12 +26,16 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class UserDashboard extends AppCompatActivity {
+public class UserDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //Variables
+    static final float END_SCALE = 0.7f;
+
     RecyclerView featuredRecycler, mostViewedRecycler, categoriesRecycler;
     RecyclerView.Adapter adapter;
     private GradientDrawable gradient1, gradient2, gradient3, gradient4;
+    ImageView menuIcon;
+    LinearLayout contentView;
 
     //Drawer Menu
     DrawerLayout drawerLayout;
@@ -40,10 +50,14 @@ public class UserDashboard extends AppCompatActivity {
         featuredRecycler = findViewById(R.id.featured_recycler);
         mostViewedRecycler = findViewById(R.id.most_viewed_recycler);
         categoriesRecycler = findViewById(R.id.categories_recycler);
+        menuIcon = findViewById(R.id.menu_icon);
+        contentView = findViewById(R.id.content);
 
         //Menu
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
+
+        navigationDrawer();
 
         //Recycler Views
         featuredRecycler();
@@ -51,6 +65,56 @@ public class UserDashboard extends AppCompatActivity {
         categoriesRecycler();
     }
 
+    //Navigation Drawers Functions
+    private void navigationDrawer() {
+
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
+
+        menuIcon.setOnClickListener((view) -> {
+                if(drawerLayout.isDrawerVisible(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
+                else drawerLayout.openDrawer(GravityCompat.START);
+        });
+
+        animateNavigationDrawer();
+
+    }
+
+    private void animateNavigationDrawer() {
+
+        drawerLayout.setScrimColor(getResources().getColor(R.color.colorPrimary));
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+                // Scale the View based on current slide offset
+                final float diffScaledOffset = slideOffset * (1 - END_SCALE);
+                final float offsetScale = 1 - diffScaledOffset;
+                contentView.setScaleX(offsetScale);
+                contentView.setScaleY(offsetScale);
+
+                // Translate the View, accounting for the scaled width
+                final float xOffset = drawerView.getWidth() * slideOffset;
+                final float xOffsetDiff = contentView.getWidth() * diffScaledOffset / 2;
+                final float xTranslation = xOffset - xOffsetDiff;
+                contentView.setTranslationX(xTranslation);
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(drawerLayout.isDrawerVisible(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
+        else super.onBackPressed();
+
+    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) { return true; }
+
+    //Recycler Views Functions
     private void categoriesRecycler() {
 
         //All Gradients
@@ -74,7 +138,6 @@ public class UserDashboard extends AppCompatActivity {
         categoriesRecycler.setAdapter(adapter);
 
     }
-
     private void mostViewedRecycler() {
 
         mostViewedRecycler.setHasFixedSize(true);
@@ -90,7 +153,6 @@ public class UserDashboard extends AppCompatActivity {
         mostViewedRecycler.setAdapter(adapter);
 
     }
-
     private void featuredRecycler() {
 
         featuredRecycler.setHasFixedSize(true);
