@@ -12,11 +12,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.guidemaps.Common.LoginSignup.Login;
 import com.example.guidemaps.R;
 import com.example.guidemaps.User.UserDashboard;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashScreen extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private static int SPLASH_TIMER = 5000;
 
     ImageView backgroundImage;
@@ -31,6 +35,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_screen);
+        mAuth = FirebaseAuth.getInstance();
 
         backgroundImage = findViewById(R.id.background_image);
         poweredByLine = findViewById(R.id.powered_by_line);
@@ -57,8 +62,12 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
 
             } else {
-                Intent intent = new Intent(getApplicationContext(), UserDashboard.class);
-                startActivity(intent);
+                FirebaseUser user = mAuth.getCurrentUser();
+                if(user == null) {
+                    startActivity(new Intent(SplashScreen.this, Login.class));
+                } else {
+                    startActivity(new Intent(SplashScreen.this, UserDashboard.class));
+                }
                 finish();
             }
 

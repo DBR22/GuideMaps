@@ -1,21 +1,35 @@
 package com.example.guidemaps.Common.LoginSignup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.guidemaps.R;
+import com.example.guidemaps.User.UserDashboard;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
 
@@ -25,11 +39,17 @@ public class SignUp extends AppCompatActivity {
 
     TextInputLayout fullName, username, email, password;
 
+    private String userID;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_retailer_sign_up);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         backBtn = findViewById(R.id.signup_back_button);
         next = findViewById(R.id.signup_next_button);
@@ -45,13 +65,41 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    public void callNextSignupScreen(View view) {
+    public void createUser(View view) {
 
         if(!validateFullName() | !validateUsername() | !validateEmail() | !validatePassword()){
             return;
         }
 
-        Intent intent = new Intent(getApplicationContext(),SignUp.class);
+        mAuth.createUserWithEmailAndPassword(email.getEditText().getText().toString().trim(), password.getEditText().getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    userID = mAuth.getCurrentUser().getUid();
+                    DocumentReference documentReference = db.collection("users").document(userID);
+
+                    Map<String,Object> user = new HashMap<>();
+                    user.put("Nombre",fullName.getEditText().getText().toString().trim());
+                    user.put("Nickname",username.getEditText().getText().toString().trim());
+                    user.put("Email",email.getEditText().getText().toString().trim());
+                    user.put("Contraseña",password.getEditText().getText().toString().trim());
+
+                    documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("TAG", "onSuccess: Datos Registrados"+userID);
+                        }
+                    });
+
+                    Toast.makeText(SignUp.this, "Usuario Registrado", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SignUp.this, Login.class));
+                } else {
+                    Toast.makeText(SignUp.this, "Usuario no registrado"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        /*Intent intent = new Intent(getApplicationContext(),SignUp.class);
 
         Pair[] pairs = new Pair[4];
 
@@ -63,7 +111,7 @@ public class SignUp extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignUp.this,pairs);
             startActivity(intent, options.toBundle());
-        } else startActivity(intent);
+        } else startActivity(intent);*/
 
     }
 
@@ -121,9 +169,19 @@ public class SignUp extends AppCompatActivity {
 
     private boolean validateEmail() {
         String val = email.getEditText().getText().toString().trim();
-        String checkEmail = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        //String checkEmail = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
-        if(val.isEmpty()) {
+
+        if (!val.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(val).matches()) {
+            email.setError(null);
+            email.setErrorEnabled(false);
+            return true;
+        } else {
+            email.setError("¡Introduce un email válido!");
+            return false;
+        }
+
+        /*if(val.isEmpty()) {
             email.setError("El campo no puede estar vacío");
             return false;
         } else if(!val.matches(checkEmail)) {
@@ -133,26 +191,21 @@ public class SignUp extends AppCompatActivity {
             email.setError(null);
             email.setErrorEnabled(false);
             return true;
-        }
+        }*/
     }
 
     private boolean validatePassword() {
         String val = password.getEditText().getText().toString().trim();
         String checkPassword =  "^" +
-                //"(?=.*[0-9])" +         //at least 1 digit
-                //"(?=.*[a-z])" +         //at least 1 lower case letter
-                //"(?=.*[A-Z])" +         //at least 1 upper case letter
-                "(?=.*[a-zA-Z])" +      //any letter
-                //"(?=.*[@#$%^&+=])" +    //at least 1 special character
-                "(?=S+$)" +           //no white spaces
-                ".{4,}" +               //at least 4 characters
+                "(?=\\S+$)" +            // no white spaces
+                ".{4,}" +                // at least 4 characters
                 "$";
 
         if(val.isEmpty()) {
             password.setError("El campo no puede estar vacío");
             return false;
         } else if(!val.matches(checkPassword)) {
-            password.setError("¡La contraseña debe contener 4 caracteres!");
+            password.setError("¡La contraseña debe contener al menos 4 caracteres!");
             return false;
         } else {
             password.setError(null);

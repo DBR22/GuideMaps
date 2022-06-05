@@ -15,11 +15,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.guidemaps.Common.LoginSignup.Login;
 import com.example.guidemaps.HelperClasses.SliderAdapter;
 import com.example.guidemaps.R;
 import com.example.guidemaps.User.UserDashboard;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class OnBoarding extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
 
     ViewPager viewPager;
     LinearLayout dotsLayout;
@@ -34,6 +39,7 @@ public class OnBoarding extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_on_boarding);
+        mAuth = FirebaseAuth.getInstance();
 
         viewPager = findViewById(R.id.slider);
         dotsLayout = findViewById(R.id.dots);
@@ -47,7 +53,12 @@ public class OnBoarding extends AppCompatActivity {
     }
 
     public void skip(View view){
-        startActivity(new Intent(this, UserDashboard.class));
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user == null) {
+            startActivity(new Intent(this, Login.class));
+        } else {
+            startActivity(new Intent(this, UserDashboard.class));
+        }
         finish();
     }
 
