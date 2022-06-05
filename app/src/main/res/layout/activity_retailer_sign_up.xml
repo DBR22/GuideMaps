@@ -145,6 +145,7 @@
             android:text="@string/login"
             android:background="#00000000"
             android:textColor="@color/black"
+            android:onClick="callNextLoginScreen"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/muli"
             android:elevation="5dp"

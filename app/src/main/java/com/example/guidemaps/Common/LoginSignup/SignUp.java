@@ -53,4 +53,22 @@ public class SignUp extends AppCompatActivity {
 
     }
 
+    public void callNextLoginScreen(View view) {
+
+        Intent intent = new Intent(getApplicationContext(),Login.class);
+
+        Pair[] pairs = new Pair[4];
+
+        pairs[0] = new Pair<View,String>(backBtn,"transition_back_arrow_btn");
+        pairs[1] = new Pair<View,String>(next,"transition_next_btn");
+        pairs[2] = new Pair<View,String>(login,"transition_login_btn");
+        pairs[3] = new Pair<View,String>(titleText,"transition_title_btn");
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SignUp.this,pairs);
+            startActivity(intent,options.toBundle());
+        } else startActivity(intent);
+
+    }
+
 }

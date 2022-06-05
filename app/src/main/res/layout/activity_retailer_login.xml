@@ -19,9 +19,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:src="@drawable/general_back_icon" />
+            android:src="@drawable/general_back_icon"
+            android:transitionName="transition_back_btn"/>
 
         <TextView
+            android:id="@+id/signup_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -29,7 +31,8 @@
             android:text="@string/login"
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            android:transitionName="transition_title"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,20 +109,25 @@
             </RelativeLayout>
 
             <Button
+                android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/login"
                 android:background="@color/black"
                 android:textColor="@color/white"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:transitionName="transition_login_button"/>
 
             <Button
+                android:id="@+id/signup_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/create_account"
                 android:background="#00000000"
+                android:onClick="callSignup"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:transitionName="transition_signup_btn"/>
 
         </LinearLayout>
 
