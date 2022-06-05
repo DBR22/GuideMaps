@@ -76,5 +76,7 @@
     <!-- Login -->
     <string name="enter_username">Nombre de Usuario</string>
     <string name="enter_password">Contraseña</string>
+    <string name="enter_full_name">Nombre Completo</string>
+    <string name="enter_email">Email</string>
 
 </resources>
