@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "613577781359",
+    "project_id": "guide-maps-2ba88",
+    "storage_bucket": "guide-maps-2ba88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613577781359:android:9da10e5ab47462b6b01d9a",
+        "android_client_info": {
+          "package_name": "com.example.guidemaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613577781359-o5718tt8ct2mgkiu32pt34gr4ti58m3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOcdF4Cf5-4qRbDOtxZDJW-XuZcnmVlCw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613577781359-o5718tt8ct2mgkiu32pt34gr4ti58m3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
