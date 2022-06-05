@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.guidemaps.Common.Login.RetailerStartUpScreen;
+import com.example.guidemaps.Common.LoginSignup.RetailerStartUpScreen;
 import com.example.guidemaps.HelperClasses.HomeAdapter.CategoriesAdapter;
 import com.example.guidemaps.HelperClasses.HomeAdapter.CategoriesHelperClass;
 import com.example.guidemaps.HelperClasses.HomeAdapter.FeaturedAdapter;

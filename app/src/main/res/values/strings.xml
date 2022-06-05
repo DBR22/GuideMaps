@@ -50,13 +50,9 @@
     <string name="search">Buscar</string>
     <string name="all_categories">Categorías</string>
     <string name="add_missing_place">Añadir Lugar</string>
-
-    <!-- Profile -->
     <string name="login">Iniciar Sesión</string>
     <string name="profile">Perfil</string>
     <string name="logout">Cerrar Sesión</string>
-
-    <!-- Share -->
     <string name="share">Compartir</string>
     <string name="rate_us">Califícanos</string>
 
@@ -75,5 +71,10 @@
     <string name="how_we_work">¿Cómo trabajamos?</string>
     <string name="remember_me">Recuérdame</string>
     <string name="forget_password">Olvidar Contraseña</string>
+
+
+    <!-- Login -->
+    <string name="enter_username">Nombre de Usuario</string>
+    <string name="enter_password">Contraseña</string>
 
 </resources>
