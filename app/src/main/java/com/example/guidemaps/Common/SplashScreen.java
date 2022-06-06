@@ -62,12 +62,13 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
 
             } else {
-                FirebaseUser user = mAuth.getCurrentUser();
-                if(user == null) {
+                //FirebaseUser user = mAuth.getCurrentUser();
+                startActivity(new Intent(SplashScreen.this, Login.class));
+                /*if(user == null) {
                     startActivity(new Intent(SplashScreen.this, Login.class));
                 } else {
                     startActivity(new Intent(SplashScreen.this, UserDashboard.class));
-                }
+                }*/
                 finish();
             }
 

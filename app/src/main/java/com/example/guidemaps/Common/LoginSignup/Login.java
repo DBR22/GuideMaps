@@ -4,8 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.SettingInjectorService;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -24,6 +31,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
 
 public class Login extends AppCompatActivity {
@@ -75,14 +88,19 @@ public class Login extends AppCompatActivity {
     }
 
     public void userLogin() {
+
+        if(!isConnected(this)) {
+            showCustomDialog();
+        }
+
         String email_text = email.getEditText().getText().toString().trim();
         String password_text = password.getEditText().getText().toString().trim();
 
         if(TextUtils.isEmpty(email_text)) {
-            email.setError("Introduce un nombre de usuario");
+            email.setError("Introduce un email");
             email.requestFocus();
         } else if(TextUtils.isEmpty(password_text)) {
-            Toast.makeText(Login.this, "Introduce una contraseña", Toast.LENGTH_SHORT).show();
+            password.setError("Introduce una contraseña");
             password.requestFocus();
         } else {
 
@@ -100,6 +118,44 @@ public class Login extends AppCompatActivity {
             });
 
         }
+
+    }
+
+    private boolean isConnected(Login login) {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) login.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo wifiConn = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobileConn = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if((wifiConn != null && wifiConn.isConnected()) || (mobileConn != null && mobileConn.isConnected())) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    private void showCustomDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+        builder.setMessage("Por favor, conéctese a Internet para continuar")
+                .setCancelable(false)
+                .setPositiveButton("Conectar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(getApplicationContext(), Login.class));
+                        finish();
+                    }
+                });
+
+        builder.show();
 
     }
 
