@@ -23,25 +23,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.R;
 import com.example.guidemaps.User.AllCategories;
 import com.example.guidemaps.User.UserDashboard;
+import com.example.guidemaps.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class Login extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseAnalytics firebaseAnalytics;
+
+    private static List<Place> places = new ArrayList<Place>();
+    private static List<String> placesDownloadUrl = new ArrayList<String>();
 
     ImageView backBtn;
     Button login, signup;
@@ -53,7 +66,14 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_retailer_login);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FirebaseAnalytics.Param.START_DATE, new Date());
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
         mAuth = FirebaseAuth.getInstance();
+
+        places.clear();
+        readFromFirebase();
 
         email = findViewById(R.id.login_email);
         password = findViewById(R.id.login_password);
@@ -114,6 +134,52 @@ public class Login extends AppCompatActivity {
                         Log.w("TAG", "Error:",task.getException());
                         Toast.makeText(Login.this, "Usuario no registrado", Toast.LENGTH_SHORT).show();
                     }
+
+                    /*if (task.isSuccessful()) {
+
+                        FirebaseDatabase db = FirebaseDatabase.getInstance() ;
+
+                        DatabaseReference ref = db.getReference("users") ;
+
+                        // Obtenemos la información del usuario
+                        ref.child(mAuth.getCurrentUser().getUid())
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        if (dataSnapshot.exists()) {
+
+                                            // Rescatamos la información devuelta por Firebase
+                                            User user = dataSnapshot.getValue(User.class) ;
+
+                                            Intent intent = null;
+                                            if (user.getEmail().equals("admin@gmail.com")) {
+                                                Toast.makeText(Login.this, "Eres admin", Toast.LENGTH_LONG).show();
+                                                intent = new Intent(Login.this, UserDashboard.class);
+                                            } else {
+                                                Toast.makeText(Login.this, "Test", Toast.LENGTH_LONG).show();
+                                                intent = new Intent(Login.this, UserDashboard.class) ;
+                                            }
+
+                                            intent.putExtra("user", user);
+                                            intent.putExtra("lugares", (Serializable) places);
+                                            intent.putExtra("lugaresDownload", (Serializable) placesDownloadUrl);
+
+                                            intent.putExtra("botonGoogle", false);
+                                            // Lanzar la actividad ListActivity
+                                            startActivity(intent) ;
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(Login.this, "El usuario o la contraseña son erróneos", Toast.LENGTH_LONG).show();
+                    }*/
                 }
             });
 
@@ -156,6 +222,34 @@ public class Login extends AppCompatActivity {
                 });
 
         builder.show();
+
+    }
+
+    private void readFromFirebase() {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("lugar");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Object obj = ds.getValue();
+                    String nombre = (String) ((HashMap) obj).get("nombre");
+                    String imagen = (String) ((HashMap) obj).get("imagen");
+                    String descripcion = (String) ((HashMap) obj).get("descripcion");
+                    double latitud = (double) ((HashMap) obj).get("latitud");
+                    double longitud = (double) ((HashMap) obj).get("longitud");
+                    Place lugar = new Place(nombre, latitud, longitud, imagen, descripcion);
+                    places.add(lugar);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Error:", "Database Error Lugares");
+            }
+        });
 
     }
 
