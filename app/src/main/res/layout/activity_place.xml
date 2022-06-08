@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".User.PlaceActivity"
+    app:layout_editor_absoluteY="81dp">
+    
+    <ImageView
+        android:id="@+id/imagenLugar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#606060"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/guideLine2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"/>
+
+    <TextView
+        android:id="@+id/nombreLug"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:background="#773c3c3c"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:fontFamily="@font/muli_black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideLine2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideLine2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="255dp"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideLine2"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
