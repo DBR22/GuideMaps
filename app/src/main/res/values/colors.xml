@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFE400</color>
-    <color name="colorPrimaryDark">#FFA600</color>
+    <color name="colorPrimary">#6096BA</color>
+    <color name="colorPrimaryDark">#274C77</color>
     <color name="colorAccent">#272727</color>
     <color name="lightWhite">#F5F5F5</color>
     <color name="black">#FF000000</color>
@@ -19,5 +19,7 @@
     <color name="card2">#7ADCCF</color>
     <color name="card3">#F7C59F</color>
     <color name="card4">#B8D7F5</color>
+    
+    <color name="mtrl_textinput_default_box_stroke_color">#FFF</color>
 
 </resources>

@@ -25,6 +25,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,7 +45,7 @@ public class SignUp extends AppCompatActivity {
 
     private String userID;
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private FirebaseDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class SignUp extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_retailer_sign_up);
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseDatabase.getInstance();
 
         backBtn = findViewById(R.id.signup_back_button);
         next = findViewById(R.id.signup_next_button);
@@ -76,7 +78,7 @@ public class SignUp extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email.getEditText().getText().toString().trim(), password.getEditText().getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
+                /*if(task.isSuccessful()) {
                     userID = mAuth.getCurrentUser().getUid();
                     DocumentReference documentReference = db.collection("users").document(userID);
 
@@ -97,9 +99,9 @@ public class SignUp extends AppCompatActivity {
                     startActivity(new Intent(SignUp.this, Login.class));
                 } else {
                     Toast.makeText(SignUp.this, "Usuario no registrado"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
-                /*if (task.isSuccessful()) {
+                if (task.isSuccessful()) {
 
                     db = FirebaseDatabase.getInstance();
 
@@ -124,8 +126,8 @@ public class SignUp extends AppCompatActivity {
                     finish();
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error en el registro", Toast.LENGTH_SHORT).show();
-                }*/
+                    Toast.makeText(getApplicationContext(), "Error en el registro"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -186,8 +188,6 @@ public class SignUp extends AppCompatActivity {
 
     private boolean validateEmail() {
         String val = email.getEditText().getText().toString().trim();
-        //String checkEmail = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
 
         if (!val.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(val).matches()) {
             email.setError(null);
@@ -198,31 +198,20 @@ public class SignUp extends AppCompatActivity {
             return false;
         }
 
-        /*if(val.isEmpty()) {
-            email.setError("El campo no puede estar vacío");
-            return false;
-        } else if(!val.matches(checkEmail)) {
-            email.setError("¡Email Inválido!");
-            return false;
-        } else {
-            email.setError(null);
-            email.setErrorEnabled(false);
-            return true;
-        }*/
     }
 
     private boolean validatePassword() {
         String val = password.getEditText().getText().toString().trim();
         String checkPassword =  "^" +
                 "(?=\\S+$)" +            // no white spaces
-                ".{4,}" +                // at least 4 characters
+                ".{6,}" +                // at least 6 characters
                 "$";
 
         if(val.isEmpty()) {
             password.setError("El campo no puede estar vacío");
             return false;
         } else if(!val.matches(checkPassword)) {
-            password.setError("¡La contraseña debe contener al menos 4 caracteres!");
+            password.setError("¡La contraseña debe contener al menos 6 caracteres!");
             return false;
         } else {
             password.setError(null);

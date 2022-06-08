@@ -53,8 +53,8 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAnalytics firebaseAnalytics;
 
-    private static List<Place> places = new ArrayList<Place>();
-    private static List<String> placesDownloadUrl = new ArrayList<String>();
+    private static List<Place> lugares = new ArrayList<Place>();
+    private static List<String> lugaresDownloadUrl = new ArrayList<String>();
 
     ImageView backBtn;
     Button login, signup;
@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
         mAuth = FirebaseAuth.getInstance();
 
-        places.clear();
+        lugares.clear();
         readFromFirebase();
 
         email = findViewById(R.id.login_email);
@@ -127,21 +127,20 @@ public class Login extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email_text, password_text).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()) {
+                    /*if(task.isSuccessful()) {
                         Toast.makeText(Login.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, UserDashboard.class));
                     } else {
                         Log.w("TAG", "Error:",task.getException());
                         Toast.makeText(Login.this, "Usuario no registrado", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
 
-                    /*if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
                         FirebaseDatabase db = FirebaseDatabase.getInstance() ;
 
-                        DatabaseReference ref = db.getReference("users") ;
+                        DatabaseReference ref = db.getReference("usuario") ;
 
-                        // Obtenemos la información del usuario
                         ref.child(mAuth.getCurrentUser().getUid())
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -149,21 +148,16 @@ public class Login extends AppCompatActivity {
 
                                         if (dataSnapshot.exists()) {
 
-                                            // Rescatamos la información devuelta por Firebase
-                                            User user = dataSnapshot.getValue(User.class) ;
-
+                                            User usuario = dataSnapshot.getValue(User.class) ;
                                             Intent intent = null;
-                                            if (user.getEmail().equals("admin@gmail.com")) {
-                                                Toast.makeText(Login.this, "Eres admin", Toast.LENGTH_LONG).show();
+                                            if (usuario.getEmail().equals("admin@gmail.com")) {
                                                 intent = new Intent(Login.this, UserDashboard.class);
                                             } else {
-                                                Toast.makeText(Login.this, "Test", Toast.LENGTH_LONG).show();
                                                 intent = new Intent(Login.this, UserDashboard.class) ;
                                             }
-
-                                            intent.putExtra("user", user);
-                                            intent.putExtra("lugares", (Serializable) places);
-                                            intent.putExtra("lugaresDownload", (Serializable) placesDownloadUrl);
+                                            intent.putExtra("usuario", usuario);
+                                            intent.putExtra("lugares", (Serializable) lugares);
+                                            intent.putExtra("lugaresDownload", (Serializable) lugaresDownloadUrl);
 
                                             intent.putExtra("botonGoogle", false);
                                             // Lanzar la actividad ListActivity
@@ -179,7 +173,7 @@ public class Login extends AppCompatActivity {
                                 });
                     } else {
                         Toast.makeText(Login.this, "El usuario o la contraseña son erróneos", Toast.LENGTH_LONG).show();
-                    }*/
+                    }
                 }
             });
 
@@ -241,7 +235,7 @@ public class Login extends AppCompatActivity {
                     double latitud = (double) ((HashMap) obj).get("latitud");
                     double longitud = (double) ((HashMap) obj).get("longitud");
                     Place lugar = new Place(nombre, latitud, longitud, imagen, descripcion);
-                    places.add(lugar);
+                    lugares.add(lugar);
                 }
             }
 
