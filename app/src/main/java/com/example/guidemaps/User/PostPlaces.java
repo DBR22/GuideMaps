@@ -1,5 +1,9 @@
 package com.example.guidemaps.User;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +62,20 @@ public class PostPlaces extends AppCompatActivity {
 
     private static Favourites lugaresFavoritos = null;
 
+    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if(result != null && result.getResultCode() == RESULT_OK) {
+                if(result.getData() != null) {
+                    Intent intent = new Intent(getApplicationContext(), NewPlace.class);
+                    Bundle extras = result.getData().getExtras();
+                    intent.putExtra("lugarBundle", extras);
+                    startActivity(intent);
+                }
+            }
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +88,7 @@ public class PostPlaces extends AppCompatActivity {
 
         lugares = (List<Place>) intent.getSerializableExtra("lugares");
 
-        getSupportActionBar().setSubtitle("Todos los lugares");
+        //getSupportActionBar().setSubtitle("Todos los lugares");
 
         recyclerView = findViewById(R.id.recyclerLugares);
 
@@ -83,7 +101,7 @@ public class PostPlaces extends AppCompatActivity {
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, 1);
+                    startForResult.launch(takePictureIntent);
                 }
             }
         });
@@ -106,17 +124,6 @@ public class PostPlaces extends AppCompatActivity {
         if (usuario != null) downloadFavsFromFirebase(usuario.getIdUsuario());
 
         registerForContextMenu(recyclerView);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            Intent intent = new Intent(getApplicationContext(), NewPlace.class);
-            Bundle extras = data.getExtras();
-            intent.putExtra("lugarBundle", extras);
-            startActivity(intent);
-        }
     }
 
     private void pedirPermisos(){

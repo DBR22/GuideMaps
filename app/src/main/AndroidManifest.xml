@@ -4,6 +4,11 @@
     package="com.example.guidemaps">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,11 +21,22 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAOKAdq54s6h9mfraV0bzrfUG672iavQ9k" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
-            android:name=".ProfileActivity"
+            android:name=".User.PlaceActivity"
             android:exported="false" />
         <activity
-            android:name=".PostPlaces"
+            android:name=".User.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".User.PostPlaces"
             android:exported="false" />
         <activity
             android:name=".Common.LoginSignup.SignUp"

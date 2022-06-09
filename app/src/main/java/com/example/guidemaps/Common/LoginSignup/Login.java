@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.R;
 import com.example.guidemaps.User.AllCategories;
+import com.example.guidemaps.User.PostPlaces;
 import com.example.guidemaps.User.UserDashboard;
 import com.example.guidemaps.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,6 +72,7 @@ public class Login extends AppCompatActivity {
         bundle.putSerializable(FirebaseAnalytics.Param.START_DATE, new Date());
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
         mAuth = FirebaseAuth.getInstance();
+        fillFirebaseDB();
 
         lugares.clear();
         readFromFirebase();
@@ -153,7 +155,7 @@ public class Login extends AppCompatActivity {
                                             if (usuario.getEmail().equals("admin@gmail.com")) {
                                                 intent = new Intent(Login.this, UserDashboard.class);
                                             } else {
-                                                intent = new Intent(Login.this, UserDashboard.class) ;
+                                                intent = new Intent(Login.this, PostPlaces.class) ;
                                             }
                                             intent.putExtra("usuario", usuario);
                                             intent.putExtra("lugares", (Serializable) lugares);
@@ -216,6 +218,21 @@ public class Login extends AppCompatActivity {
                 });
 
         builder.show();
+
+    }
+
+    private void fillFirebaseDB() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("lugar");
+
+        myRef.child("Malaga").setValue(new Place("Malaga", 36.7182015,-4.519307, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fmalaga.jpg?alt=media&token=d8842715-74a0-4170-bb13-88460b5c7050", "descripcion"));
+        myRef.child("Madrid").setValue(new Place("Madrid", 40.4378698,-3.8196207, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fmadrid.jpg?alt=media&token=b5dfc1e7-61a2-4170-93d2-41cbe05ec349", "descripcion"));
+        myRef.child("Barcelona").setValue(new Place("Barcelona", 41.3947688,2.0787279, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fbarcelona.jpg?alt=media&token=6826d2b0-fe85-41c2-a8fb-1a437c993481", "descripcion"));
+        myRef.child("Sevilla").setValue(new Place("Sevilla", 37.3753501,-6.0250983, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fsevilla.jpg?alt=media&token=49c11879-97c1-4b46-9cb8-1a7eec5c3f86", "descripcion"));
+        myRef.child("Cadiz").setValue(new Place("Cadiz", 36.5163813,-6.3174866, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fcadiz.jpg?alt=media&token=5b1ca5d8-2057-49ad-bea1-048a5ef00c19", "descripcion"));
+        myRef.child("Valencia").setValue(new Place("Valencia", 39.4077013,-0.5015956, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fvalencia.png?alt=media&token=34372fd2-5a09-4ba4-af1a-7282605be027", "descripcion"));
+        myRef.child("Andorra").setValue(new Place("Andorra", 42.5421846,1.4575882, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fandorra.jpg?alt=media&token=7e8d0adb-a892-453a-a518-06209972c338", "descripcion"));
+
 
     }
 

@@ -1,5 +1,9 @@
 package com.example.guidemaps.User;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,6 +39,38 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView imageView;
     protected static Uri uriRes;
 
+    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if(result != null && result.getResultCode() == RESULT_OK) {
+                if(result.getData() != null) {
+                    Bundle extras = result.getData().getExtras();
+                    final Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    String idUsuario = usuario.getIdUsuario();
+
+                    // Creamos una referencia a la carpeta y el nombre de la imagen donde se guardara
+                    StorageReference mountainImagesRef = storage.getReference().child("users/" + idUsuario);
+                    getDownloadUrlUser(mountainImagesRef);
+
+                    //Pasamos la imagen a un array de byte
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] datas = baos.toByteArray();
+                    // Empezamos con la subida a Firebase
+                    UploadTask uploadTask = mountainImagesRef.putBytes(datas);
+                    uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            imageView.setImageBitmap(imageBitmap);
+                        }
+                    });
+                }
+            }
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,40 +99,10 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, 1);
+                    startForResult.launch(takePictureIntent);
                 }
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-
-            Bundle extras = data.getExtras();
-            final Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            String idUsuario = usuario.getIdUsuario();
-
-            // Creamos una referencia a la carpeta y el nombre de la imagen donde se guardara
-            StorageReference mountainImagesRef = storage.getReference().child("users/" + idUsuario);
-            getDownloadUrlUser(mountainImagesRef);
-
-            //Pasamos la imagen a un array de byte
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] datas = baos.toByteArray();
-            // Empezamos con la subida a Firebase
-            UploadTask uploadTask = mountainImagesRef.putBytes(datas);
-            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    imageView.setImageBitmap(imageBitmap);
-                }
-            });
-        }
     }
 
     protected void getDownloadUrlUser(StorageReference storageReference) {

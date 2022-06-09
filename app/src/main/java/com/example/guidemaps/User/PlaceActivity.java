@@ -2,6 +2,7 @@ package com.example.guidemaps.User;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -23,6 +25,7 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
     ImageView iv;
 
     GoogleMap map;
+    SupportMapFragment mapFragment;
 
     Place place;
 
@@ -35,13 +38,22 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
 
         place = (Place) intent.getSerializableExtra("lugar");
 
-        getSupportActionBar().setSubtitle(place.getNombre());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setSubtitle(place.getNombre());
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tv = findViewById(R.id.nombreLug);
         iv = findViewById(R.id.imagenLugar);
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        /*MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);*/
+
+        if(map == null) {
+            mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+
+            if(map != null) {
+                onMapReady(map);
+            }
+        }
 
         tv.setText(place.getNombre());
         Glide.with(this).load(place.getImagen()).into(iv);
