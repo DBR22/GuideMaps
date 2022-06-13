@@ -2,7 +2,6 @@ package com.example.guidemaps.Common;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.example.guidemaps.Common.LoginSignup.Login;
 import com.example.guidemaps.HelperClasses.SliderAdapter;
 import com.example.guidemaps.R;
-import com.example.guidemaps.User.UserDashboard;
+import com.example.guidemaps.User.PostPlaces;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -57,7 +56,7 @@ public class OnBoarding extends AppCompatActivity {
         if(user == null) {
             startActivity(new Intent(this, Login.class));
         } else {
-            startActivity(new Intent(this, UserDashboard.class));
+            startActivity(new Intent(this, PostPlaces.class));
         }
         finish();
     }

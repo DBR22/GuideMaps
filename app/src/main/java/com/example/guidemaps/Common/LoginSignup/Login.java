@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.SettingInjectorService;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,9 +24,7 @@ import android.widget.Toast;
 
 import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.R;
-import com.example.guidemaps.User.AllCategories;
 import com.example.guidemaps.User.PostPlaces;
-import com.example.guidemaps.User.UserDashboard;
 import com.example.guidemaps.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,9 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -153,7 +148,7 @@ public class Login extends AppCompatActivity {
                                             User usuario = dataSnapshot.getValue(User.class) ;
                                             Intent intent = null;
                                             if (usuario.getEmail().equals("admin@gmail.com")) {
-                                                intent = new Intent(Login.this, UserDashboard.class);
+                                                intent = new Intent(Login.this, PostPlaces.class);
                                             } else {
                                                 intent = new Intent(Login.this, PostPlaces.class) ;
                                             }

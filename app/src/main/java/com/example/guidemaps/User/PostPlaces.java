@@ -1,12 +1,12 @@
 package com.example.guidemaps.User;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,20 +14,22 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.guidemaps.Common.LoginSignup.Login;
 import com.example.guidemaps.HelperClasses.PlaceAdapter;
-import com.example.guidemaps.Location.NewPlace;
+import com.example.guidemaps.Location.CreateMapActivity;
 import com.example.guidemaps.Models.Favourites;
 import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.Models.User;
 import com.example.guidemaps.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +37,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonParser;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -48,13 +49,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PostPlaces extends AppCompatActivity {
+public class PostPlaces extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     RecyclerView recyclerView;
+    int SELECT_PICTURE = 200;
+    public static final String EXTRA_USER_MAP = "EXTRA_USER_MAP";
+    public static final String EXTRA_MAP_TITLE = "EXTRA_MAP_TITLE";
     public static PlaceAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private FloatingActionButton floatingActionButton;
+    private ImageView addBtn;
 
     public static List<Place> lugares = new ArrayList<Place>();
 
@@ -62,24 +66,60 @@ public class PostPlaces extends AppCompatActivity {
 
     private static Favourites lugaresFavoritos = null;
 
-    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if(result != null && result.getResultCode() == RESULT_OK) {
-                if(result.getData() != null) {
-                    Intent intent = new Intent(getApplicationContext(), NewPlace.class);
-                    Bundle extras = result.getData().getExtras();
-                    intent.putExtra("lugarBundle", extras);
+    ImageView menuIcon;
+    LinearLayout contentView;
+
+    //Drawer Menu
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+
+    //Variables
+    static final float END_SCALE = 0.7f;
+
+    ActivityResultLauncher<Intent> startForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    /*Intent intent = new Intent(getApplicationContext(), NewPlace.class);
+                    Intent data = result.getData();
+                    intent.putExtras(data);
+                    if (data != null && data.getData() != null) {
+                        //startActivity(intent);
+                        Log.i("Datos Error", " " + data);
+                    }*/
+                    Intent intent = new Intent(getApplicationContext(), CreateMapActivity.class);
                     startActivity(intent);
                 }
-            }
-        }
-    });
+            });
+            /*new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result != null && result.getResultCode() == RESULT_OK) {
+                        if(result.getData() != null) {
+                            Intent intent = new Intent(getApplicationContext(), NewPlace.class);
+                            Bundle extras = result.getData().getExtras();
+                            if(extras == null)Toast.makeText(getApplicationContext(), "Extras NULL: " + result, Toast.LENGTH_SHORT).show();
+                            Log.i("Extras", "" + result.getData().getExtras());
+                            intent.putExtra("lugarBundle", extras);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            });*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_places);
+
+        menuIcon = findViewById(R.id.menu_icon);
+        contentView = findViewById(R.id.content);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+
+        navigationDrawer();
 
         final Intent intent = getIntent();
 
@@ -93,18 +133,25 @@ public class PostPlaces extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerLugares);
 
         layoutManager = new LinearLayoutManager(this);
-        floatingActionButton = findViewById(R.id.addPhoto);
+        addBtn = findViewById(R.id.addPhoto);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        /*floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent iGallery = new Intent(Intent.ACTION_PICK);
+                iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startForResult.launch(iGallery);
 
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startForResult.launch(takePictureIntent);
-                }
+                Intent iGallery = new Intent();
+                iGallery.setType("image/*");
+                iGallery.setAction(Intent.ACTION_GET_CONTENT);
+
+                launchSomeActivity.launch(iGallery);
+                Intent intMap = new Intent(getApplicationContext(), CreateMapActivity.class);
+                //intMap.putExtra(EXTRA_MAP_TITLE, "new map name");
+                startForResult.launch(intMap);
             }
-        });
+        });*/
 
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PlaceAdapter(R.layout.lugar, this, lugares, new PlaceAdapter.OnItemClickListener() {
@@ -294,8 +341,77 @@ public class PostPlaces extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onResume() { super.onResume(); }
+
+
+
+
+
+    //Navigation Drawers Functions
+    private void navigationDrawer() {
+
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
+
+        menuIcon.setOnClickListener((view) -> {
+            if(drawerLayout.isDrawerVisible(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
+            else drawerLayout.openDrawer(GravityCompat.START);
+        });
+
+        animateNavigationDrawer();
+
     }
 
+    private void animateNavigationDrawer() {
+
+        drawerLayout.setScrimColor(getResources().getColor(R.color.colorPrimary));
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+                // Scale the View based on current slide offset
+                final float diffScaledOffset = slideOffset * (1 - END_SCALE);
+                final float offsetScale = 1 - diffScaledOffset;
+                contentView.setScaleX(offsetScale);
+                contentView.setScaleY(offsetScale);
+
+                // Translate the View, accounting for the scaled width
+                final float xOffset = drawerView.getWidth() * slideOffset;
+                final float xOffsetDiff = contentView.getWidth() * diffScaledOffset / 2;
+                final float xTranslation = xOffset - xOffsetDiff;
+                contentView.setTranslationX(xTranslation);
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.nav_home:
+                super.onBackPressed();
+                //startActivity(new Intent(getApplicationContext(), PostPlaces.class));
+                break;
+            case R.id.nav_add_missing_place:
+                startActivity(new Intent(getApplicationContext(), CreateMapActivity.class));
+                break;
+            case R.id.nav_favourite_place:
+                startActivity(new Intent(getApplicationContext(), FavsActivity.class));
+                break;
+            case R.id.nav_profile:
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                break;
+            case R.id.nav_logout:
+                startActivity(new Intent(getApplicationContext(), Login.class));
+                break;
+        }
+
+        return true;
+    }
+
+    public void addPlace(View view) {
+        startActivity(new Intent(getApplicationContext(), CreateMapActivity.class));
+    }
 }

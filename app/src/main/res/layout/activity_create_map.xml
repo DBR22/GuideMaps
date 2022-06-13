@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3f3f3f"
-    tools:context=".User.PostPlaces"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Location.CreateMapActivity"
     android:id="@+id/drawer_layout">
 
     <LinearLayout
@@ -27,18 +26,21 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/menu_icon" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/idSearchView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Mis Lugares"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/muli_black"
-                android:textSize="30sp"
-                android:textColor="@color/black"/>
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="65dp"
+                android:layout_marginBottom="10dp"
+                android:background="#BFBFBF"
+                android:elevation="5dp"
+                app:iconifiedByDefault="false"
+                app:queryHint="Buscar" />
 
             <ImageView
-                android:id="@+id/addPhoto"
+                android:id="@+id/saveIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
@@ -49,20 +51,18 @@
                 android:layout_marginBottom="8dp"
                 android:background="@color/banner_background"
                 android:elevation="6dp"
-                android:onClick="addPlace"
+                android:onClick="savePlace"
                 android:padding="5dp"
-                android:src="@drawable/add_missing_place_icon" />
+                android:src="@drawable/save_icon" />
 
         </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerLugares"
+        <fragment xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            tools:context=".MapsActivity" />
 
     </LinearLayout>
 

@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import com.example.guidemaps.Common.LoginSignup.Login;
 import com.example.guidemaps.R;
-import com.example.guidemaps.User.UserDashboard;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SplashScreen extends AppCompatActivity {
 

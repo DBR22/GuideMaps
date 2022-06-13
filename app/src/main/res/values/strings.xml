@@ -3,6 +3,7 @@
     <string name="logo_name">Encuentra tu Camino</string>
     <string name="slogan_name">¡Todo lo que tiene tu ciudad está aquí!</string>
     <string name="powered_by">Desarrollado por David Blanes</string>
+    <string name="API_KEY">AIzaSyAOKAdq54s6h9mfraV0bzrfUG672iavQ9k</string>
 
     <!-- On Boarding Screen -->
 
@@ -55,6 +56,7 @@
     <string name="logout">Cerrar Sesión</string>
     <string name="share">Compartir</string>
     <string name="rate_us">Califícanos</string>
+    <string name="favourite">Favoritos</string>
 
 
     <!-- Categorías -->
@@ -79,5 +81,12 @@
     <string name="enter_full_name">Nombre Completo</string>
     <string name="enter_email">Email</string>
     <string name="borrar_de_favoritos">Borrar de favoritos</string>
+    <string name="title_activity_create_map">CreateMapActivity</string>
+    <string name="title_activity_other_maps">OtherMapsActivity</string>
+
+
+    <!-- Dialog Create Places -->
+    <string name="dcp_name">Nombre</string>
+    <string name="dcp_desc">Descripción</string>
 
 </resources>
