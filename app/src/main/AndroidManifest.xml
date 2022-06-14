@@ -50,6 +50,9 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:name=".User.FavsActivity"
+            android:exported="false" />
+        <activity
             android:name=".User.PlaceActivity"
             android:exported="false" />
         <activity

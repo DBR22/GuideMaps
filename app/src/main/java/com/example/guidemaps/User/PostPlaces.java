@@ -3,7 +3,6 @@ package com.example.guidemaps.User;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -22,8 +20,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.guidemaps.Adapters.PlaceAdapter;
 import com.example.guidemaps.Common.LoginSignup.Login;
-import com.example.guidemaps.HelperClasses.PlaceAdapter;
 import com.example.guidemaps.Location.CreateMapActivity;
 import com.example.guidemaps.Models.Favourites;
 import com.example.guidemaps.Models.Place;
@@ -45,6 +43,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +57,8 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
     public static PlaceAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private ImageView addBtn;
-
     public static List<Place> lugares = new ArrayList<Place>();
+    private static List<String> lugaresDownloadUrl = new ArrayList<String>();
 
     protected static User usuario = null;
 
@@ -133,7 +131,6 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
         recyclerView = findViewById(R.id.recyclerLugares);
 
         layoutManager = new LinearLayoutManager(this);
-        addBtn = findViewById(R.id.addPhoto);
 
         /*floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,7 +204,7 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
                 .check();
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         AlertDialog alertDialog = new AlertDialog.Builder(PostPlaces.this).create();
         alertDialog.setTitle("Cerrar sesión");
@@ -226,7 +223,7 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
             }
         });
         alertDialog.show();
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -391,20 +388,32 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
 
         switch (item.getItemId()){
             case R.id.nav_home:
-                super.onBackPressed();
-                //startActivity(new Intent(getApplicationContext(), PostPlaces.class));
+                Intent intent_home = new Intent(getApplicationContext(), PostPlaces.class);
+                intent_home.putExtra("usuario", usuario);
+                intent_home.putExtra("lugares", (Serializable) lugares);
+                intent_home.putExtra("lugaresDownload", (Serializable) lugaresDownloadUrl);
+                intent_home.putExtra("botonGoogle", false);
+                startActivity(intent_home) ;
                 break;
             case R.id.nav_add_missing_place:
-                startActivity(new Intent(getApplicationContext(), CreateMapActivity.class));
+                Intent intent_place = new Intent(getApplicationContext(), CreateMapActivity.class);
+                startActivity(intent_place);
                 break;
             case R.id.nav_favourite_place:
-                startActivity(new Intent(getApplicationContext(), FavsActivity.class));
+                Intent intent_fav = new Intent(getApplicationContext(), FavsActivity.class);
+                intent_fav.putExtra("lugaresFavoritos", lugaresFavoritos);
+                intent_fav.putExtra("usuario", usuario);
+                startActivity(intent_fav);
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                Intent intent_prof = new Intent(getApplicationContext(), ProfileActivity.class);
+                intent_prof.putExtra("usuario", usuario);
+                startActivity(intent_prof);
                 break;
             case R.id.nav_logout:
-                startActivity(new Intent(getApplicationContext(), Login.class));
+                Intent intent_logout = new Intent(getApplicationContext(), Login.class);
+                FirebaseAuth.getInstance().signOut();
+                startActivity(intent_logout);
                 break;
         }
 

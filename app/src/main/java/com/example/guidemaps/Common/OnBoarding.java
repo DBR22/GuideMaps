@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.guidemaps.Common.LoginSignup.Login;
-import com.example.guidemaps.HelperClasses.SliderAdapter;
+import com.example.guidemaps.Adapters.SliderAdapter;
 import com.example.guidemaps.R;
 import com.example.guidemaps.User.PostPlaces;
 import com.google.firebase.auth.FirebaseAuth;

@@ -1,4 +1,4 @@
-package com.example.guidemaps.HelperClasses;
+package com.example.guidemaps.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

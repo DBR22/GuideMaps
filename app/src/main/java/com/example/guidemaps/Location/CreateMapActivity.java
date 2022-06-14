@@ -33,7 +33,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.guidemaps.Common.LoginSignup.Login;
+import com.example.guidemaps.Models.Favourites;
 import com.example.guidemaps.Models.Place;
+import com.example.guidemaps.Models.User;
 import com.example.guidemaps.R;
 import com.example.guidemaps.User.AllCategories;
 import com.example.guidemaps.User.FavsActivity;
@@ -49,8 +51,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +65,13 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
     private GoogleMap mMap;
     private SearchView searchView;
     private List<Marker> markers = new ArrayList<>();
+
+    public static List<Place> lugares = new ArrayList<Place>();
+    private static List<String> lugaresDownloadUrl = new ArrayList<String>();
+
+    protected static User usuario = null;
+
+    private static Favourites lugaresFavoritos = null;
 
     ImageView menuIcon, saveIcon;
     LinearLayout contentView;
@@ -254,20 +265,32 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
 
         switch (item.getItemId()){
             case R.id.nav_home:
-                super.onBackPressed();
-                //startActivity(new Intent(getApplicationContext(), PostPlaces.class));
+                Intent intent_home = new Intent(getApplicationContext(), PostPlaces.class);
+                intent_home.putExtra("usuario", usuario);
+                intent_home.putExtra("lugares", (Serializable) lugares);
+                intent_home.putExtra("lugaresDownload", (Serializable) lugaresDownloadUrl);
+                intent_home.putExtra("botonGoogle", false);
+                startActivity(intent_home) ;
                 break;
             case R.id.nav_add_missing_place:
-                startActivity(new Intent(getApplicationContext(), CreateMapActivity.class));
+                Intent intent_place = new Intent(getApplicationContext(), CreateMapActivity.class);
+                startActivity(intent_place);
                 break;
             case R.id.nav_favourite_place:
-                startActivity(new Intent(getApplicationContext(), FavsActivity.class));
+                Intent intent_fav = new Intent(getApplicationContext(), FavsActivity.class);
+                intent_fav.putExtra("lugaresFavoritos", lugaresFavoritos);
+                intent_fav.putExtra("usuario", usuario);
+                startActivity(intent_fav);
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                Intent intent_prof = new Intent(getApplicationContext(), ProfileActivity.class);
+                intent_prof.putExtra("usuario", usuario);
+                startActivity(intent_prof);
                 break;
             case R.id.nav_logout:
-                startActivity(new Intent(getApplicationContext(), Login.class));
+                Intent intent_logout = new Intent(getApplicationContext(), Login.class);
+                FirebaseAuth.getInstance().signOut();
+                startActivity(intent_logout);
                 break;
         }
 

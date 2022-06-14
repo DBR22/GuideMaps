@@ -1,4 +1,4 @@
-package com.example.guidemaps.HelperClasses.HomeAdapter;
+package com.example.guidemaps.Adapters.HomeAdapter;
 
 public class FeaturedHelperClass {
 
