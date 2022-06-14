@@ -68,7 +68,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceHolder>
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    position = getAdapterPosition();
+                    position = getBindingAdapterPosition();
                     return false;
                 }
             });
@@ -82,7 +82,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceHolder>
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(place, getAdapterPosition());
+                    listener.onItemClick(place, getBindingAdapterPosition());
                 }
             });
         }
@@ -98,4 +98,5 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceHolder>
     public interface OnItemClickListener {
         void onItemClick(Place place, int position) ;
     }
+
 }

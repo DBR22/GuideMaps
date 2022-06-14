@@ -127,7 +127,7 @@
                     android:src="@drawable/menu_profile_icon"
                     android:scaleType="centerCrop"
                     app:civ_border_width="2dp"
-                    app:civ_border_color="@color/black"/>
+                    app:civ_border_color="@color/white"/>
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -136,7 +136,7 @@
                     android:layout_marginBottom="4dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imagenPerfil"
                     app:layout_constraintStart_toEndOf="@id/imagenPerfil"
-                    app:srcCompat="@drawable/field_full_name_icon"/>
+                    app:srcCompat="@drawable/profile_edit_icon"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

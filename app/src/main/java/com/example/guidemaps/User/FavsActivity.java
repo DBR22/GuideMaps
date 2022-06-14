@@ -121,9 +121,9 @@ public class FavsActivity extends AppCompatActivity implements NavigationView.On
         return super.onContextItemSelected(item);
     }
 
-    private void deleteFromFirebase(int position, Place place) {
+    private void deleteFromFirebase(int position, @NonNull Place place) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference("favoritos/" + usuario.getIdUsuario() + "/lugaresFavoritos/" + position);
+        DatabaseReference ref = database.getReference("favoritos/" + usuario.getIdUsuario() + "/favouritePlaces/" + position);
         AlertDialog alertDialog = new AlertDialog.Builder(FavsActivity.this).create();
         alertDialog.setTitle("Borrar de favoritos");
         alertDialog.setMessage("¿Estás seguro de borrar " + place.getNombre() + " de favoritos?");
@@ -193,9 +193,8 @@ public class FavsActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 Intent intent_home = new Intent(getApplicationContext(), PostPlaces.class);
                 intent_home.putExtra("usuario", usuario);
-                intent_home.putExtra("lugares", (Serializable) places);
+                intent_home.putExtra("lugares", (Serializable) PostPlaces.lugares);
                 intent_home.putExtra("lugaresDownload", (Serializable) lugaresDownloadUrl);
-                intent_home.putExtra("botonGoogle", false);
                 startActivity(intent_home) ;
                 break;
             case R.id.nav_add_missing_place:

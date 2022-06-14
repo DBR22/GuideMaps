@@ -332,16 +332,6 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() { super.onResume(); }
-
-
-
 
 
     //Navigation Drawers Functions
@@ -423,4 +413,5 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
     public void addPlace(View view) {
         startActivity(new Intent(getApplicationContext(), CreateMapActivity.class));
     }
+
 }

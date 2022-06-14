@@ -63,7 +63,7 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         if (place != null) {
             LatLng deLugar = new LatLng(place.getLatitud(), place.getLongitud());
-            int zoom = 8;
+            int zoom = 10;
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deLugar, zoom));
             googleMap.addMarker(new MarkerOptions().position(deLugar).title(place.getNombre()).draggable(true));
             map = googleMap;

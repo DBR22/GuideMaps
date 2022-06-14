@@ -32,28 +32,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="65dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="#BFBFBF"
                 android:elevation="5dp"
                 app:iconifiedByDefault="false"
                 app:queryHint="Buscar" />
-
-            <ImageView
-                android:id="@+id/saveIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/banner_background"
-                android:elevation="6dp"
-                android:onClick="savePlace"
-                android:padding="5dp"
-                android:src="@drawable/save_icon" />
 
         </RelativeLayout>
 

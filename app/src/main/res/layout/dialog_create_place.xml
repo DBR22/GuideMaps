@@ -23,4 +23,14 @@
         android:hint="Descripción"
         android:inputType="textPersonName"
         android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/etImagen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Imagen URL"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
 </LinearLayout>

@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity {
         bundle.putSerializable(FirebaseAnalytics.Param.START_DATE, new Date());
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, bundle);
         mAuth = FirebaseAuth.getInstance();
-        fillFirebaseDB();
+        //fillFirebaseDB();
 
         lugares.clear();
         readFromFirebase();

@@ -52,6 +52,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -64,16 +66,16 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
     private static final String TAG = "CreateMapActivity";
     private GoogleMap mMap;
     private SearchView searchView;
-    private List<Marker> markers = new ArrayList<>();
+    //private List<Marker> markers = new ArrayList<>();
 
     public static List<Place> lugares = new ArrayList<Place>();
     private static List<String> lugaresDownloadUrl = new ArrayList<String>();
 
-    protected static User usuario = null;
+    private static User usuario = null;
 
     private static Favourites lugaresFavoritos = null;
 
-    ImageView menuIcon, saveIcon;
+    ImageView menuIcon;
     LinearLayout contentView;
 
     //Drawer Menu
@@ -95,8 +97,6 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
         navigationView = findViewById(R.id.navigation_view);
 
         navigationDrawer();
-
-        saveIcon = findViewById(R.id.saveIcon);
 
         searchView = findViewById(R.id.idSearchView);
 
@@ -124,9 +124,11 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
 
                     LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
 
-                    markers.add(mMap.addMarker(new MarkerOptions().position(latLng).title(location).snippet(location)));
+                    //mMap.addMarker(new MarkerOptions().position(latLng).title(location).snippet(location));
 
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+
+                    showAlertDialog(latLng);
                 }
                 return false;
             }
@@ -170,14 +172,14 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
         }
         mMap.setMyLocationEnabled(true);
 
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        /*mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(@NonNull Marker markerToDelete) {
                 Log.i(TAG, "onWindowClickListener- delete this marker");
                 markers.remove(markerToDelete);
                 markerToDelete.remove();
             }
-        });
+        });*/
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -206,19 +208,32 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
             public void onClick(View v) {
                 EditText etTitle = placeFormView.findViewById(R.id.etTitle);
                 EditText etDesc = placeFormView.findViewById(R.id.etDescription);
+                EditText etImg = placeFormView.findViewById(R.id.etImagen);
                 String title = etTitle.getText().toString();
                 String desc = etDesc.getText().toString();
-                if(title.trim().isEmpty() || desc.trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "El lugar debe tener un título y una descripción", Toast.LENGTH_SHORT).show();
+                String img = etImg.getText().toString();
+                if(title.trim().isEmpty() || desc.trim().isEmpty() || img.trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(title).snippet(desc));
-                markers.add(marker);
+                mMap.addMarker(new MarkerOptions().position(latLng).title(title).snippet(desc));
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("lugar");
+
+                myRef.child(title).setValue(new Place(title, latLng.latitude, latLng.longitude, img, desc));
+                //markers.add(marker);
                 dialog.dismiss();
+
+                Intent intent_places = new Intent(getApplicationContext(), Login.class);
+                intent_places.putExtra("usuario", usuario);
+                intent_places.putExtra("lugares", (Serializable) PostPlaces.lugares);
+                startActivity(intent_places) ;
             }
         });
 
     }
+
 
 
     //Navigation Drawers Functions
@@ -267,10 +282,9 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
             case R.id.nav_home:
                 Intent intent_home = new Intent(getApplicationContext(), PostPlaces.class);
                 intent_home.putExtra("usuario", usuario);
-                intent_home.putExtra("lugares", (Serializable) lugares);
+                intent_home.putExtra("lugares", (Serializable) PostPlaces.lugares);
                 intent_home.putExtra("lugaresDownload", (Serializable) lugaresDownloadUrl);
-                intent_home.putExtra("botonGoogle", false);
-                startActivity(intent_home) ;
+                startActivity(intent_home);
                 break;
             case R.id.nav_add_missing_place:
                 Intent intent_place = new Intent(getApplicationContext(), CreateMapActivity.class);
@@ -298,9 +312,9 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
     }
 
     public void savePlace(View view) {
-        if(markers.isEmpty()) {
+        /*if(markers.isEmpty()) {
             Toast.makeText(this, "Debe haber al menos un marcador en el mapa", Toast.LENGTH_LONG).show();
-        }
+        }*/
 
     }
 }

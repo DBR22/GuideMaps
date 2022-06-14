@@ -5,10 +5,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.guidemaps.Common.LoginSignup.Login;
@@ -28,6 +31,7 @@ import com.example.guidemaps.Models.Favourites;
 import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.Models.User;
 import com.example.guidemaps.R;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,8 +60,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     public static List<Place> lugares = new ArrayList<Place>();
     private static List<String> lugaresDownloadUrl = new ArrayList<String>();
-
-    //protected static User usuario = null;
 
     private static Favourites lugaresFavoritos = null;
 
@@ -155,14 +157,39 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         textViewUsuario.getEditText().setText(usuario.getNombre());
         textViewEmail.getEditText().setText(usuario.getEmail());
         editIcon.setOnClickListener(view -> {
-
-            Intent takePictureIntent = new Intent();
+            Toast.makeText(this,"Prueba Edit Perfil",Toast.LENGTH_LONG).show();
+            /*Intent takePictureIntent = new Intent();
             takePictureIntent.setType("image/*");
             takePictureIntent.setAction(Intent.ACTION_GET_CONTENT);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startForResult.launch(takePictureIntent);
+            }*/
+            showAlertDialog(imageView);
+        });
+    }
+
+    private void showAlertDialog(ImageView imageView) {
+        View placeFormView = getLayoutInflater().inflate(R.layout.dialog_edit_profile, null);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Nueva imagen de perfil")
+                .setView(placeFormView)
+                .setNegativeButton("Cancelar",null)
+                .setPositiveButton("OK",null).show();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText etImg = placeFormView.findViewById(R.id.etImagen);
+                String img = etImg.getText().toString();
+                if(img.trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                imageView.setImageResource(R.drawable.profile_test);
+                dialog.dismiss();
             }
         });
+
     }
 
     protected void getDownloadUrlUser(StorageReference storageReference) {
@@ -248,9 +275,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_home:
                 Intent intent_home = new Intent(getApplicationContext(), PostPlaces.class);
                 intent_home.putExtra("usuario", usuario);
-                intent_home.putExtra("lugares", (Serializable) lugares);
+                intent_home.putExtra("lugares", (Serializable) PostPlaces.lugares);
                 intent_home.putExtra("lugaresDownload", (Serializable) lugaresDownloadUrl);
-                intent_home.putExtra("botonGoogle", false);
                 startActivity(intent_home) ;
                 break;
             case R.id.nav_add_missing_place:
