@@ -1,23 +1,23 @@
-package com.example.guidemaps.User;
-
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+package com.example.guidemaps.Admin;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.guidemaps.Adapters.PlaceAdapter;
 import com.example.guidemaps.Common.LoginSignup.Login;
@@ -26,6 +26,10 @@ import com.example.guidemaps.Models.Favourites;
 import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.Models.User;
 import com.example.guidemaps.R;
+import com.example.guidemaps.User.FavsActivity;
+import com.example.guidemaps.User.PlaceActivity;
+import com.example.guidemaps.User.PostPlaces;
+import com.example.guidemaps.User.ProfileActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -35,17 +39,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class PostPlacesAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static Favourites favouritePlaces = null;
-    RecyclerView recyclerView;
-    private PlaceAdapter adapter;
+    RecyclerView recyclerView = null;
+    public static PlaceAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private List<Place> places = new ArrayList<>();
+    public static List<Place> lugares = new ArrayList<Place>();
     private static List<String> lugaresDownloadUrl = new ArrayList<String>();
 
-    private User usuario;
+    protected static User usuario = null;
 
     private static Favourites lugaresFavoritos = null;
 
@@ -62,31 +65,23 @@ public class FavsActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favs);
-
-        menuIcon = findViewById(R.id.menu_icon);
-        contentView = findViewById(R.id.content);
+        setContentView(R.layout.activity_post_places_admin);
+        Intent intent = getIntent();
+        lugares = (List<Place>) intent.getSerializableExtra("lugares");
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
 
+        menuIcon = findViewById(R.id.menu_icon);
+        contentView = findViewById(R.id.content);
+
         navigationDrawer();
 
-        Intent intent = getIntent();
-
-        favouritePlaces = (Favourites) intent.getSerializableExtra("lugaresFavoritos");
-        Log.i("Error", " " + favouritePlaces);
-
-        usuario = (User) intent.getSerializableExtra("usuario");
-
-        places = favouritePlaces.getFavouritePlaces();
-
-        recyclerView = findViewById(R.id.recyclerPlaces);
+        recyclerView = findViewById(R.id.recyclerLugares);
 
         layoutManager = new LinearLayoutManager(this);
-
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new PlaceAdapter(R.layout.lugar, this, places, new PlaceAdapter.OnItemClickListener() {
+        if(layoutManager != null) recyclerView.setLayoutManager(layoutManager);
+        adapter = new PlaceAdapter(R.layout.lugar, this, lugares, new PlaceAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Place place, int position) {
                 Intent intent1 = new Intent(getApplicationContext(), PlaceActivity.class);
@@ -94,52 +89,77 @@ public class FavsActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent1);
             }
         });
-        recyclerView.setAdapter(adapter);
-
+        if(adapter != null) recyclerView.setAdapter(adapter);
         registerForContextMenu(recyclerView);
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return super.onSupportNavigateUp();
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.deletefav_place_menu, menu);
+        getMenuInflater().inflate(R.menu.borrar_lugar, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Place place = favouritePlaces.getFavouritePlaces().get(adapter.getPosition());
-        deleteFromFirebase(place.getPosicionFirebaseFav(), place);
+        Place lugar = lugares.get(adapter.getPosition());
+        borrarLugar(lugar);
         return super.onContextItemSelected(item);
     }
 
-    private void deleteFromFirebase(int position, @NonNull Place place) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("favoritos/" + usuario.getIdUsuario() + "/favouritePlaces/" + position);
-        AlertDialog alertDialog = new AlertDialog.Builder(FavsActivity.this).create();
-        alertDialog.setTitle("Borrar de favoritos");
-        alertDialog.setMessage("¿Estás seguro de borrar " + place.getNombre() + " de favoritos?");
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Sí", new DialogInterface.OnClickListener() {
+    private void borrarLugar(Place lugar) {
+        AlertDialog builder = new AlertDialog.Builder(PostPlacesAdmin.this)
+                .setTitle("Borrar lugar")
+                .setMessage("¿Estás seguro de querer borrar " + lugar.getNombre())
+                .setNegativeButton("Cancelar",null)
+                .setPositiveButton("Sí", null).show();
+
+        builder.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getApplicationContext(), "Se borra de favoritos", Toast.LENGTH_SHORT).show();
-                favouritePlaces.getFavouritePlaces().remove(adapter.getPosition());
-                ref.removeValue();
-                adapter.notifyItemRemoved(adapter.getPosition());
+            public void onClick(View v) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference("lugar/"+lugar.getNombre());
+                if(adapter != null) {
+                    lugares.remove(adapter.getPosition());
+                    ref.removeValue();
+                    adapter.notifyItemRemoved(adapter.getPosition());
+                }
+                Toast.makeText(getApplicationContext(), "Lugar eliminado", Toast.LENGTH_SHORT).show();
             }
         });
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
+
+        builder.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getApplicationContext(), "Borrar lugar favorito cancelado", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Borrar lugar cancelado", Toast.LENGTH_SHORT).show();
             }
         });
-        alertDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.cerrar_sesion_solo, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.cerrarsesionmenu:
+                FirebaseAuth.getInstance().signOut();
+                super.finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        return true;
+    }
+
+    public void onBackPressed() {
+        lugares.clear();
+        FirebaseAuth.getInstance().signOut();
+        super.onBackPressed();
     }
 
 
@@ -190,24 +210,14 @@ public class FavsActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 Intent intent_home = new Intent(getApplicationContext(), PostPlaces.class);
                 intent_home.putExtra("usuario", usuario);
-                intent_home.putExtra("lugares", (Serializable) PostPlaces.lugares);
+                intent_home.putExtra("lugares", (Serializable) lugares);
                 intent_home.putExtra("lugaresDownload", (Serializable) lugaresDownloadUrl);
+                intent_home.putExtra("botonGoogle", false);
                 startActivity(intent_home) ;
                 break;
             case R.id.nav_add_missing_place:
                 Intent intent_place = new Intent(getApplicationContext(), CreateMapActivity.class);
                 startActivity(intent_place);
-                break;
-            case R.id.nav_favourite_place:
-                Intent intent_fav = new Intent(getApplicationContext(), FavsActivity.class);
-                intent_fav.putExtra("lugaresFavoritos", lugaresFavoritos);
-                intent_fav.putExtra("usuario", usuario);
-                startActivity(intent_fav);
-                break;
-            case R.id.nav_profile:
-                Intent intent_prof = new Intent(getApplicationContext(), ProfileActivity.class);
-                intent_prof.putExtra("usuario", usuario);
-                startActivity(intent_prof);
                 break;
             case R.id.nav_logout:
                 Intent intent_logout = new Intent(getApplicationContext(), Login.class);
@@ -217,5 +227,9 @@ public class FavsActivity extends AppCompatActivity implements NavigationView.On
         }
 
         return true;
+    }
+
+    public void addPlace(View view) {
+        startActivity(new Intent(getApplicationContext(), CreateMapActivity.class));
     }
 }

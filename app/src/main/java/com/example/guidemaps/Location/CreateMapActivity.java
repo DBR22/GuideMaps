@@ -1,11 +1,7 @@
 package com.example.guidemaps.Location;
 
-import static com.example.guidemaps.User.PostPlaces.EXTRA_MAP_TITLE;
-import static com.example.guidemaps.User.PostPlaces.lugares;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -13,16 +9,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -37,17 +30,14 @@ import com.example.guidemaps.Models.Favourites;
 import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.Models.User;
 import com.example.guidemaps.R;
-import com.example.guidemaps.User.AllCategories;
 import com.example.guidemaps.User.FavsActivity;
 import com.example.guidemaps.User.PostPlaces;
 import com.example.guidemaps.User.ProfileActivity;
-import com.example.guidemaps.databinding.ActivityCreateMapBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -58,7 +48,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateMapActivity extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -154,15 +143,7 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -190,9 +171,6 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
 
         });
 
-        /*LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
     private void showAlertDialog(LatLng latLng) {
@@ -311,10 +289,9 @@ public class CreateMapActivity extends FragmentActivity implements NavigationVie
         return true;
     }
 
-    public void savePlace(View view) {
-        /*if(markers.isEmpty()) {
+    /*public void savePlace(View view) {
+        if(markers.isEmpty()) {
             Toast.makeText(this, "Debe haber al menos un marcador en el mapa", Toast.LENGTH_LONG).show();
-        }*/
-
-    }
+        }
+    }*/
 }

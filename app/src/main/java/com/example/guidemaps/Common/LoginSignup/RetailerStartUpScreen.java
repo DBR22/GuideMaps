@@ -17,7 +17,7 @@ public class RetailerStartUpScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_retailer_start_up_screen);
+        setContentView(R.layout.activity_retailer_login);
     }
 
     public void callLoginScreen(View view) {
@@ -25,7 +25,7 @@ public class RetailerStartUpScreen extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(),Login.class);
 
         Pair[] pairs = new Pair[1];
-        pairs[0] = new Pair<View,String>(findViewById(R.id.login_btn),"transition_login");
+        pairs[0] = new Pair<View,String>(findViewById(R.id.login_button),"transition_login");
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(RetailerStartUpScreen.this,pairs);
@@ -39,7 +39,7 @@ public class RetailerStartUpScreen extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(),SignUp.class);
 
         Pair[] pairs = new Pair[1];
-        pairs[0] = new Pair<View,String>(findViewById(R.id.login_btn),"transition_signup");
+        pairs[0] = new Pair<View,String>(findViewById(R.id.login_button),"transition_signup");
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(RetailerStartUpScreen.this,pairs);

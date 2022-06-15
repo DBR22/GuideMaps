@@ -51,7 +51,6 @@ import java.util.List;
 public class PostPlaces extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     RecyclerView recyclerView;
-    int SELECT_PICTURE = 200;
     public static final String EXTRA_USER_MAP = "EXTRA_USER_MAP";
     public static final String EXTRA_MAP_TITLE = "EXTRA_MAP_TITLE";
     public static PlaceAdapter adapter;
@@ -78,33 +77,11 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
-                    /*Intent intent = new Intent(getApplicationContext(), NewPlace.class);
-                    Intent data = result.getData();
-                    intent.putExtras(data);
-                    if (data != null && data.getData() != null) {
-                        //startActivity(intent);
-                        Log.i("Datos Error", " " + data);
-                    }*/
                     Intent intent = new Intent(getApplicationContext(), CreateMapActivity.class);
                     startActivity(intent);
                 }
             });
-            /*new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if(result != null && result.getResultCode() == RESULT_OK) {
-                        if(result.getData() != null) {
-                            Intent intent = new Intent(getApplicationContext(), NewPlace.class);
-                            Bundle extras = result.getData().getExtras();
-                            if(extras == null)Toast.makeText(getApplicationContext(), "Extras NULL: " + result, Toast.LENGTH_SHORT).show();
-                            Log.i("Extras", "" + result.getData().getExtras());
-                            intent.putExtra("lugarBundle", extras);
-                            startActivity(intent);
-                        }
-                    }
-                }
-            });*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,29 +103,9 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
 
         lugares = (List<Place>) intent.getSerializableExtra("lugares");
 
-        //getSupportActionBar().setSubtitle("Todos los lugares");
-
         recyclerView = findViewById(R.id.recyclerLugares);
 
         layoutManager = new LinearLayoutManager(this);
-
-        /*floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent iGallery = new Intent(Intent.ACTION_PICK);
-                iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startForResult.launch(iGallery);
-
-                Intent iGallery = new Intent();
-                iGallery.setType("image/*");
-                iGallery.setAction(Intent.ACTION_GET_CONTENT);
-
-                launchSomeActivity.launch(iGallery);
-                Intent intMap = new Intent(getApplicationContext(), CreateMapActivity.class);
-                //intMap.putExtra(EXTRA_MAP_TITLE, "new map name");
-                startForResult.launch(intMap);
-            }
-        });*/
 
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PlaceAdapter(R.layout.lugar, this, lugares, new PlaceAdapter.OnItemClickListener() {
@@ -204,27 +161,6 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
                 .check();
     }
 
-    /*@Override
-    public void onBackPressed() {
-        AlertDialog alertDialog = new AlertDialog.Builder(PostPlaces.this).create();
-        alertDialog.setTitle("Cerrar sesión");
-        alertDialog.setMessage("¿Estás seguro de cerrar sesión?");
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Sí", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                lugares.clear();
-                FirebaseAuth.getInstance().signOut();
-                PostPlaces.super.onBackPressed();
-            }
-        });
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        alertDialog.show();
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_place, menu);
@@ -279,7 +215,7 @@ public class PostPlaces extends AppCompatActivity implements NavigationView.OnNa
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //JsonParser parser = new JsonParser();
+
                 /**
                  * Me crea en la bbdd unos nuevos favoritos si el usuario es nuevo
                  */

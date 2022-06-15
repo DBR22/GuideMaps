@@ -38,13 +38,11 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
 
         place = (Place) intent.getSerializableExtra("lugar");
 
-        //getSupportActionBar().setSubtitle(place.getNombre());
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         tv = findViewById(R.id.nombreLug);
         iv = findViewById(R.id.imagenLugar);
-        /*MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
+
+        //MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        //mapFragment.getMapAsync(this);
 
         if(map == null) {
             mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -65,7 +63,7 @@ public class PlaceActivity extends AppCompatActivity implements OnMapReadyCallba
             LatLng deLugar = new LatLng(place.getLatitud(), place.getLongitud());
             int zoom = 10;
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(deLugar, zoom));
-            googleMap.addMarker(new MarkerOptions().position(deLugar).title(place.getNombre()).draggable(true));
+            googleMap.addMarker(new MarkerOptions().position(deLugar).title(place.getNombre()).snippet(place.getDescripcion()).draggable(true));
             map = googleMap;
         }
     }

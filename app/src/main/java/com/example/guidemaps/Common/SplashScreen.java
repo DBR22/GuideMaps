@@ -49,7 +49,7 @@ public class SplashScreen extends AppCompatActivity {
             onBoardingScreen = getSharedPreferences("onBoardingScreen",MODE_PRIVATE);
             boolean isFirstTime = onBoardingScreen.getBoolean("firstTime",true);
 
-            if(isFirstTime){
+            /*if(isFirstTime){
 
                 SharedPreferences.Editor editor = onBoardingScreen.edit();
                 editor.putBoolean("firstTime",false);
@@ -60,17 +60,12 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
 
             } else {
-                //FirebaseUser user = mAuth.getCurrentUser();
                 startActivity(new Intent(SplashScreen.this, Login.class));
-                /*if(user == null) {
-                    startActivity(new Intent(SplashScreen.this, Login.class));
-                } else {
-                    startActivity(new Intent(SplashScreen.this, UserDashboard.class));
-                }*/
                 finish();
-            }
+            }*/
 
-
+            startActivity(new Intent(SplashScreen.this, Login.class));
+            finish();
 
         },SPLASH_TIMER);
     }

@@ -152,8 +152,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         } else {
             Log.d("Test:","Loading");
         }
-        //getSupportActionBar().setSubtitle("Perfil");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         textViewUsuario.getEditText().setText(usuario.getNombre());
         textViewEmail.getEditText().setText(usuario.getEmail());
         editIcon.setOnClickListener(view -> {

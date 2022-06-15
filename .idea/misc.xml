@@ -17,7 +17,8 @@
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_new_place.xml" value="0.25" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_on_boarding.xml" value="0.22" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_place.xml" value="0.25" />
-        <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_post_places.xml" value="0.17222222222222222" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_post_places.xml" value="0.1" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_post_places_admin.xml" value="0.3364102564102564" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_profile.xml" value="0.24375" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_retailer_login.xml" value="0.25" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/activity_retailer_sign_up.xml" value="0.25" />
@@ -34,6 +35,8 @@
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/post_login_admin.xml" value="0.25" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/slides_layout.xml" value="0.17617753623188406" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/layout/splash_screen.xml" value="0.25" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/menu/borrar_lugar.xml" value="0.3353846153846154" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/menu/cerrar_sesion_solo.xml" value="0.3353846153846154" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/menu/deletefav_place_menu.xml" value="0.25" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/menu/main_menu.xml" value="0.3353846153846154" />
         <entry key="..\:/Users/David/AndroidStudioProjects/GuideMaps/app/src/main/res/menu/menu_place.xml" value="0.25" />

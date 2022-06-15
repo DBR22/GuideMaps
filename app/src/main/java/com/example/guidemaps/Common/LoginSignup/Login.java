@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.guidemaps.Admin.PostPlacesAdmin;
 import com.example.guidemaps.Models.Place;
 import com.example.guidemaps.R;
 import com.example.guidemaps.User.PostPlaces;
@@ -148,7 +149,7 @@ public class Login extends AppCompatActivity {
                                             User usuario = dataSnapshot.getValue(User.class) ;
                                             Intent intent = null;
                                             if (usuario.getEmail().equals("admin@gmail.com")) {
-                                                intent = new Intent(Login.this, PostPlaces.class);
+                                                intent = new Intent(Login.this, PostPlacesAdmin.class);
                                             } else {
                                                 intent = new Intent(Login.this, PostPlaces.class) ;
                                             }
@@ -220,13 +221,13 @@ public class Login extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("lugar");
 
-        myRef.child("Malaga").setValue(new Place("Malaga", 36.7182015,-4.519307, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fmalaga.jpg?alt=media&token=d8842715-74a0-4170-bb13-88460b5c7050", "descripcion"));
-        myRef.child("Madrid").setValue(new Place("Madrid", 40.4378698,-3.8196207, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fmadrid.jpg?alt=media&token=b5dfc1e7-61a2-4170-93d2-41cbe05ec349", "descripcion"));
-        myRef.child("Barcelona").setValue(new Place("Barcelona", 41.3947688,2.0787279, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fbarcelona.jpg?alt=media&token=6826d2b0-fe85-41c2-a8fb-1a437c993481", "descripcion"));
-        myRef.child("Sevilla").setValue(new Place("Sevilla", 37.3753501,-6.0250983, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fsevilla.jpg?alt=media&token=49c11879-97c1-4b46-9cb8-1a7eec5c3f86", "descripcion"));
-        myRef.child("Cadiz").setValue(new Place("Cadiz", 36.5163813,-6.3174866, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fcadiz.jpg?alt=media&token=5b1ca5d8-2057-49ad-bea1-048a5ef00c19", "descripcion"));
-        myRef.child("Valencia").setValue(new Place("Valencia", 39.4077013,-0.5015956, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fvalencia.png?alt=media&token=34372fd2-5a09-4ba4-af1a-7282605be027", "descripcion"));
-        myRef.child("Andorra").setValue(new Place("Andorra", 42.5421846,1.4575882, "https://firebasestorage.googleapis.com/v0/b/tourism-cities.appspot.com/o/lugar%2Fandorra.jpg?alt=media&token=7e8d0adb-a892-453a-a518-06209972c338", "descripcion"));
+        myRef.child("Malaga").setValue(new Place("Malaga", 36.7182015,-4.519307, "https://firebasestorage.googleapis.com/v0/b/guide-maps-2ba88.appspot.com/o/lugar%2Fmalaga.jpg?alt=media&token=23441c64-9d82-4ea4-a69d-1ddd71ac3230", "descripcion"));
+        myRef.child("Madrid").setValue(new Place("Madrid", 40.4378698,-3.8196207, "https://firebasestorage.googleapis.com/v0/b/guide-maps-2ba88.appspot.com/o/lugar%2Fmadrid.jpg?alt=media&token=89549ec6-6057-4099-bc5d-5c46872945b3", "descripcion"));
+        myRef.child("Barcelona").setValue(new Place("Barcelona", 41.3947688,2.0787279, "https://firebasestorage.googleapis.com/v0/b/guide-maps-2ba88.appspot.com/o/lugar%2Fbarcelona.jpg?alt=media&token=5d2c8d92-8ded-4d54-bac1-e1607ecc906b", "descripcion"));
+        myRef.child("Sevilla").setValue(new Place("Sevilla", 37.3753501,-6.0250983, "https://firebasestorage.googleapis.com/v0/b/guide-maps-2ba88.appspot.com/o/lugar%2Fsevilla.jpg?alt=media&token=bcb1e10e-cc65-4d1e-8965-dff79103be8f", "descripcion"));
+        myRef.child("Cadiz").setValue(new Place("Cadiz", 36.5163813,-6.3174866, "https://firebasestorage.googleapis.com/v0/b/guide-maps-2ba88.appspot.com/o/lugar%2Fcadiz.jpg?alt=media&token=f940d1c8-f9ba-46ff-9bdf-7dbf35784ec4", "descripcion"));
+        myRef.child("Valencia").setValue(new Place("Valencia", 39.4077013,-0.5015956, "https://firebasestorage.googleapis.com/v0/b/guide-maps-2ba88.appspot.com/o/lugar%2Fvalencia.png?alt=media&token=f70e5f1c-d63b-4e35-8f44-a2c845bf7cf8", "descripcion"));
+        myRef.child("Andorra").setValue(new Place("Andorra", 42.5421846,1.4575882, "https://firebasestorage.googleapis.com/v0/b/guide-maps-2ba88.appspot.com/o/lugar%2Fandorra.jpg?alt=media&token=5c580448-bfe3-4f4b-a0a1-24fef4ef7620", "descripcion"));
 
 
     }
